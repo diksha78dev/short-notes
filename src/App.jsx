@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { useState } from "react";
 import Home from "./components/Home"
 import Paste from "./components/Paste"
 import ViewPaste from "./components/ViewPaste"
@@ -8,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./middleware/ProtectedRoute";
 
+import { useSelector } from "react-redux";
 
 const router = createBrowserRouter(
   [
@@ -75,26 +75,20 @@ const router = createBrowserRouter(
   ]
 )
 
-
 function ThemeWrapper({ children }) {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
+  const darkmode = useSelector((state) => state.theme.darkmode);
 
   return (
-    <div className={darkMode ? "dark bg-gray-900 text-white" : "bg-white text-black"}>
-      <Navbar darkMode={darkMode} toggleTheme={toggleTheme} />
+    <div className={darkmode ? "dark bg-gray-900 text-white" : "bg-white text-black"}>
+      <Navbar />
       {children}
     </div>
   );
 }
 
 function App() {
-
   return (
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   )
 }
 
