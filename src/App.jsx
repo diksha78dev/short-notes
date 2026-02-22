@@ -5,7 +5,7 @@ import ViewPaste from "./components/ViewPaste"
 import Navbar from "./components/Navbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ProtectedRoute from "./middleware/ProtectedRoute";
+
 
 import { useSelector } from "react-redux";
 
@@ -30,10 +30,8 @@ const router = createBrowserRouter(
       {
     path: "/pastes",
     element: (
-      <ThemeWrapper>
-        <ProtectedRoute>
+      <ThemeWrapper> 
           <Paste />
-        </ProtectedRoute>
       </ThemeWrapper>
     ),
   },
@@ -48,9 +46,7 @@ const router = createBrowserRouter(
     path: "/pastes/:id",
     element: (
       <ThemeWrapper>
-        <ProtectedRoute>
           <ViewPaste />
-        </ProtectedRoute>
       </ThemeWrapper>
     ),
   },

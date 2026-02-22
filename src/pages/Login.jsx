@@ -1,37 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
 
-  //form state
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  //login handler
+  //  handler (no auth logic)
   const handleLogin = (e) => {
     e.preventDefault();
-
-    const savedUser =
-      JSON.parse(localStorage.getItem("registeredUser"));
-
-    if (
-      savedUser &&
-      savedUser.email === email &&
-      savedUser.password === password
-    ) {
-      // redux login
-      dispatch(login(savedUser));
-
-      // redirect after login
-      navigate("/");
-    } else {
-      alert("Invalid credentials");
-    }
+    alert("Authentication functionality will be added soon.");
   };
 
   return (
@@ -46,14 +20,12 @@ export default function Login() {
           Sign In
         </h2>
 
-        {/*added onSubmit */}
+        {/* form only UI */}
         <form className="space-y-4" onSubmit={handleLogin}>
 
           <input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             className="w-full border p-3 rounded-lg
                        bg-white dark:bg-gray-700
                        text-black dark:text-white
@@ -63,8 +35,6 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="w-full border p-3 rounded-lg
                        bg-white dark:bg-gray-700
                        text-black dark:text-white

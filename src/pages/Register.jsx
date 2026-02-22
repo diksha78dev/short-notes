@@ -1,32 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
 
-  // form state
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
-
-  //register handler
+  //handler (no auth logic)
   const handleRegister = (e) => {
     e.preventDefault();
-
-    const user = {
-      name,
-      email,
-      password,
-    };
-
-    // save user locally (frontend model)
-    localStorage.setItem("registeredUser", JSON.stringify(user));
-
-    alert("Account created successfully!");
-
-    // redirect to login
-    navigate("/login");
+    alert("Authentication functionality will be added soon.");
   };
 
   return (
@@ -41,14 +20,12 @@ export default function Register() {
           Create Account
         </h2>
 
-        {/*added onSubmit */}
+        {/* UI only form */}
         <form className="space-y-4" onSubmit={handleRegister}>
 
           <input
             type="text"
             placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
             className="w-full border p-3 rounded-lg
                        bg-white dark:bg-gray-700
                        text-black dark:text-white
@@ -58,8 +35,6 @@ export default function Register() {
           <input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             className="w-full border p-3 rounded-lg
                        bg-white dark:bg-gray-700
                        text-black dark:text-white
@@ -69,8 +44,6 @@ export default function Register() {
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="w-full border p-3 rounded-lg
                        bg-white dark:bg-gray-700
                        text-black dark:text-white
@@ -94,6 +67,7 @@ export default function Register() {
             Sign In
           </Link>
         </p>
+
       </div>
     </div>
   );
