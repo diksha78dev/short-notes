@@ -1,7 +1,7 @@
 import { Calendar, Copy, Eye, PencilLine, Trash2, Share2, StickyNote } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { removeFromPastes } from "../redux/pasteSlice";
 import { FormatDate } from "../utlis/formatDate";
@@ -10,25 +10,22 @@ const Paste = () => {
   const pastes = useSelector((state) => state.paste.pastes);
   const darkmode = useSelector((state) => state.theme.darkmode);
   const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-
-  // Debounce search term for better performance
-  useEffect(() => {
-    const delayTimer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 300); // 300ms debounce
-
-    return () => clearTimeout(delayTimer);
-  }, [searchTerm]);
 
   const handleDelete = (id) => {
     dispatch(removeFromPastes(id));
   };
 
+  const handleSearchKeyPress = (e) => {
+    if (e.key === "Enter") {
+      setSearchTerm(inputValue);
+    }
+  };
+
   const filteredPastes = pastes.filter((paste) =>
-    paste.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-    paste.content.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    paste.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paste.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -48,14 +45,15 @@ const Paste = () => {
           <input
             id="search-pastes"
             type="search"
-            placeholder="Search pastes by title OR content..."
+            placeholder="Search pastes by title OR content... (Press Enter)"
             className={`focus:outline-none w-full bg-transparent text-sm sm:text-base transition-all duration-200 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 rounded px-2 py-1 ${
               darkmode
                 ? "text-white placeholder-gray-500"
                 : "text-black placeholder-gray-400"
             }`}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleSearchKeyPress}
           />
         </div>
 
@@ -209,19 +207,19 @@ const Paste = () => {
                     darkmode ? "text-white" : "text-black"
                   }`}
                 >
-                  {debouncedSearchTerm ? "No results found" : "No notes yet"}
+                  {searchTerm ? "No results found" : "No notes yet"}
                 </h3>
                 <p
                   className={`text-sm sm:text-base mb-6 ${
                     darkmode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  {debouncedSearchTerm
+                  {searchTerm
                     ? "Try a different search term to find your notes"
                     : "Create your first note to get started"}
                 </p>
 
-                {debouncedSearchTerm ? (
+                {searchTerm ? (
                   <button
                     onClick={() => setSearchTerm("")}
                     className="px-5 py-2.5 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-blue-600 dark:hover:bg-blue-800 dark:focus:ring-offset-gray-900"
